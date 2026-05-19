@@ -1,12 +1,15 @@
 package RVAdapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +19,12 @@ import com.example.myapplication.App;
 import com.example.myapplication.OpenedScheludeActivity;
 import com.example.myapplication.R;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import entity.Plan;
+import entity.Result;
 
 public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVAdapter.ViewHolderScheludeListShow>{
 
@@ -44,7 +50,6 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
         holder.nameOfScheludeViewText.setText(schelude.getName());
 
 
-
         holder.openScheludeButtonView.setOnClickListener(v -> {
 
             App app = (App) inflater.getContext().getApplicationContext();
@@ -52,6 +57,28 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
 
             Intent intent = new Intent(inflater.getContext(), OpenedScheludeActivity.class);
             inflater.getContext().startActivity(intent);
+
+        });
+
+        holder.deleteScheludeButtonView.setOnClickListener(v -> {
+
+            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(inflater.getContext());
+
+            deleteDialog.setTitle("Удалить расписание " + schelude.getName() + " ?");
+
+            deleteDialog.setPositiveButton("OK", (dialog, which) -> {
+
+                scheludes.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, scheludes.size());
+
+            });
+
+            deleteDialog.setNegativeButton("Отмена", (dialog, which) -> {
+                dialog.cancel();
+            });
+            deleteDialog.show();
+
 
         });
 
@@ -65,13 +92,14 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
     public static class ViewHolderScheludeListShow extends RecyclerView.ViewHolder {
 
         TextView nameOfScheludeViewText;
-        Button openScheludeButtonView;
+        Button openScheludeButtonView, deleteScheludeButtonView;
 
         ViewHolderScheludeListShow(View view){
             super(view);
 
             nameOfScheludeViewText=view.findViewById(R.id.nameOfScheludeTextView);
             openScheludeButtonView=view.findViewById(R.id.openScheludeButton);
+            deleteScheludeButtonView=view.findViewById(R.id.deleteSchelButton);
 
         }
     }

@@ -7,10 +7,11 @@
 
     <TextView
         android:id="@+id/nameOfScheludeTextView"
-        android:layout_width="196dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="193dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="109dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,11 +20,10 @@
         android:id="@+id/openScheludeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="@android:color/holo_blue_dark"
         android:text="Открыть"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -34,4 +34,15 @@
         android:background="@android:color/holo_blue_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameOfScheludeTextView" />
+
+    <Button
+        android:id="@+id/deleteSchelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="2dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Удалить"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -90,28 +90,28 @@ public class App extends Application {
         plan2.getParameters().get(0).addResult(r8);
         plan2.getParameters().get(0).addResult(r9);
 
-//        Plan plan3 = new Plan("Физическая активность",
-//                new GregorianCalendar(2026, 4, 25),  // 25 мая 2026
-//                new GregorianCalendar(2026, 4, 27),  // 27 мая 2026
-//                LocalTime.of(7, 0),
-//                LocalTime.of(22, 0));
-//
-//        Parameter steps = new Parameter("Количество шагов", "шагов",
-//                new GregorianCalendar(2026, 4, 25), new GregorianCalendar(2026, 4, 27),
-//                1, 1,                               // 1 запись в день
-//                LocalTime.of(20, 0), LocalTime.of(22, 0)); // вечером
-//
-//        Parameter calories = new Parameter("Сожжённые калории", "ккал",
-//                new GregorianCalendar(2026, 4, 25), new GregorianCalendar(2026, 4, 27),
-//                2, 3,
-//                LocalTime.of(12, 0), LocalTime.of(21, 0));
-//
-//        plan3.addParameter(steps);
-//        plan3.addParameter(calories);
+        Plan plan3 = new Plan("Физическая активность",
+                new GregorianCalendar(2026, 4, 25),  // 25 мая 2026
+                new GregorianCalendar(2026, 4, 27),  // 27 мая 2026
+                LocalTime.of(7, 0),
+                LocalTime.of(22, 0));
+
+        Parameter steps = new Parameter("Количество шагов", "шагов",
+                new GregorianCalendar(2026, 4, 25), new GregorianCalendar(2026, 4, 27),
+                1, 1,                               // 1 запись в день
+                LocalTime.of(20, 0), LocalTime.of(22, 0)); // вечером
+
+        Parameter calories = new Parameter("Сожжённые калории", "ккал",
+                new GregorianCalendar(2026, 4, 25), new GregorianCalendar(2026, 4, 27),
+                2, 3,
+                LocalTime.of(12, 0), LocalTime.of(21, 0));
+
+        plan3.addParameter(steps);
+        plan3.addParameter(calories);
 
 
         getScheludes().add(plan2);
-//        app.getScheludes().add(plan3);
+        getScheludes().add(plan3);
 
     }
     public static Calendar stringToCalendar(String dateToTransform)

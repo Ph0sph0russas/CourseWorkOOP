@@ -63,6 +63,10 @@ public class Parameter {
     public ArrayList<Result> getResults() {
         return this.results;
     }
+    public void deleteResult(int position)
+    {
+        results.remove(position);
+    }
 
     public String getName() {
         return this.name;

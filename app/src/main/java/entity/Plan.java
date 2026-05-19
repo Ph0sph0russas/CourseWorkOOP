@@ -25,6 +25,10 @@ public class Plan {
     {
         this.parameters.add(parameter);
     }
+    public void deleteParameter(int position)
+    {
+        parameters.remove(position);
+    }
 
     public ArrayList<Parameter> getParameters() {
         return parameters;

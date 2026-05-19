@@ -27,12 +27,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import entity.Parameter;
+import entity.Plan;
 import entity.Result;
 
 public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfOpenedSchelRVAdapter.ParamsInOpenedSchelViewHolder>{
 
     private LayoutInflater inflater;
     private ArrayList<Parameter> parameters;
+
 
     public ParamsOfOpenedSchelRVAdapter(Context context, ArrayList<Parameter> parameters) {
         this.parameters=parameters;
@@ -179,6 +181,31 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
         });
 
+
+        holder.deleteParamBtnView.setOnClickListener(view ->{
+
+
+            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(inflater.getContext());
+
+            deleteDialog.setTitle("Удалить параметр " + parameter.getName() + " ?");
+
+            deleteDialog.setPositiveButton("OK", (dialog, which) -> {
+
+                parameters.remove(position);
+
+
+
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, parameters.size());
+
+            });
+
+            deleteDialog.setNegativeButton("Отмена", (dialog, which) -> {
+                dialog.cancel();
+            });
+            deleteDialog.show();
+        });
+
     }
 
     @Override
@@ -190,7 +217,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
     public static class ParamsInOpenedSchelViewHolder extends RecyclerView.ViewHolder {
 
         TextView paramNameOpenedSchelViewText, unitOfMeasParamOpenedSchelViewText, datesOfParamOpenedSchelViewText, timesOfParamOpenedSchelViewText;
-        Button checkResBtnView, typeResultsBtnView;
+        Button checkResBtnView, typeResultsBtnView, deleteParamBtnView;
         ParamsInOpenedSchelViewHolder(View view){
             super(view);
             paramNameOpenedSchelViewText=view.findViewById(R.id.paramNameOfOpenedSchelTextView);
@@ -200,6 +227,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
             checkResBtnView=view.findViewById(R.id.checkResBtn);
             typeResultsBtnView=view.findViewById(R.id.typeResultsBtn);
+            deleteParamBtnView= view.findViewById(R.id.deleteParamOpenSchelButton);
 
 
         }
