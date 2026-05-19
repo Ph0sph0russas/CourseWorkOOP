@@ -16,10 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 
+import java.text.NumberFormat;
+import java.time.DateTimeException;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.zip.DataFormatException;
 
 import entity.Parameter;
 import entity.Plan;
@@ -85,14 +89,49 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
             {
                 String paramName = ((createSchelViewHolder) holder).paramNameView.toString();
 
-                Calendar paramDateStart = stringToCalendar(((createSchelViewHolder) holder).paramDateStartView.getText().toString());
 
-                Calendar paramDateEnd = stringToCalendar(((createSchelViewHolder) holder).paramDateEndView.getText().toString());
+                Calendar paramDateStart;
+                try
+                {
+                    paramDateStart = stringToCalendar(((createSchelViewHolder) holder).paramDateStartView.getText().toString());
+                }
+                catch(NumberFormatException e)
+                {
+                    throw new Exception("Дата начала параметра " + paramName + " записана в неправильной форме!");
+                }
+                Calendar paramDateEnd;
+                try
+                {
+                    paramDateEnd = stringToCalendar(((createSchelViewHolder) holder).paramDateEndView.getText().toString());
+                }
+                catch(NumberFormatException e)
+                {
+                    throw new Exception("Дата окончания параметра " + paramName + " записана в неправильной форме");
+                }
+
+                LocalTime paramTimeStart;
+                try
+                {
+                    paramTimeStart = LocalTime.parse(((createSchelViewHolder) holder).paramTimeStartView.getText().toString());
+                }
+                catch (DateTimeParseException e)
+                {
+                    throw new Exception("Время начала параметра " + paramName + " записано в неправильной форме!");
+                }
+
+                LocalTime paramTimeEnd;
+                try
+                {
+                    paramTimeEnd = LocalTime.parse(((createSchelViewHolder) holder).paramTimeEndView.getText().toString());
+                }
+                catch(DateTimeParseException e)
+                {
+                    throw new Exception("Время конца параметра " + paramName + " записано в неправильной форме!");
+                }
 
 
-                LocalTime paramTimeStart = LocalTime.parse(((createSchelViewHolder) holder).paramTimeStartView.getText().toString());
 
-                LocalTime paramTimeEnd = LocalTime.parse(((createSchelViewHolder) holder).paramTimeEndView.getText().toString());
+
 
                 String perDays= ((createSchelViewHolder) holder).paramPeriodicityDaysView.getText().toString();
 

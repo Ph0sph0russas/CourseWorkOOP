@@ -76,6 +76,9 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
         EditText editEndTime=findViewById(R.id.editTextTimeEndSchel);
 
 
+
+
+
         Calendar allInOneTimeStart = new GregorianCalendar();
         allInOneTimeStart.set(
                 stringToCalendar(editStartDate.getText().toString()).get(Calendar.YEAR),
@@ -132,8 +135,29 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
                 LocalTime.parse(editEndTime.getText().toString())
         );
 
+        try{
+            createdSchelude = adapterToRecycler.addAllParametersToPlan(createdSchelude, parametersToAddRecycler);
+        }
+        catch(Exception e)
+        {
+            errorMessage=e.getMessage();
+            errorMeeted=true;
+        }
 
-        createdSchelude = adapterToRecycler.addAllParametersToPlan(createdSchelude, parametersToAddRecycler);
+        if (!errorMessage.isEmpty())
+        {
+            builder.setTitle("Ошибка")
+                    .setMessage(errorMessage)
+                    .setPositiveButton("ОК", (dialog, id) -> {
+                        builder.create().dismiss();
+                    });
+            builder.create().show();
+        }
+        if (errorMeeted)
+        {
+            return;
+        }
+
 
         App app = (App) getApplicationContext();
         app.getScheludes().add(createdSchelude);
