@@ -19,7 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.DateTimeException;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -79,17 +81,51 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
 
 
 
-        Calendar allInOneTimeStart = new GregorianCalendar();
-        allInOneTimeStart.set(
-                stringToCalendar(editStartDate.getText().toString()).get(Calendar.YEAR),
-                stringToCalendar(editStartDate.getText().toString()).get(Calendar.MONTH),
-                stringToCalendar(editStartDate.getText().toString()).get(Calendar.DAY_OF_MONTH),
-                LocalTime.parse(editStartTime.getText().toString()).getHour(),
-                LocalTime.parse(editStartTime.getText().toString()).getMinute(),
-                LocalTime.parse(editStartTime.getText().toString()).getSecond()
-        );
+        Calendar allInOneTimeStart = Calendar.getInstance();
 
-        Calendar allInOneTimeEnd = new GregorianCalendar();
+        try{
+            allInOneTimeStart.set(
+                    stringToCalendar(editStartDate.getText().toString()).get(Calendar.YEAR),
+                    stringToCalendar(editStartDate.getText().toString()).get(Calendar.MONTH),
+                    stringToCalendar(editStartDate.getText().toString()).get(Calendar.DAY_OF_MONTH),
+                    LocalTime.parse(editStartTime.getText().toString()).getHour(),
+                    LocalTime.parse(editStartTime.getText().toString()).getMinute(),
+                    LocalTime.parse(editStartTime.getText().toString()).getSecond()
+            );
+        }
+        catch(DateTimeParseException eSecond)
+        {
+            errorMessage = "Время начала расписания написано в неправильной форме";
+            errorMeeted=true;
+        }
+        catch(NumberFormatException eFirst)
+        {
+            errorMessage= "Дата начала расписания написано в неправильной форме!";
+            errorMeeted=true;
+        }
+
+        Calendar allInOneTimeEnd = Calendar.getInstance();
+
+        try{
+            allInOneTimeEnd.set(
+                    stringToCalendar(editEndDate.getText().toString()).get(Calendar.YEAR),
+                    stringToCalendar(editEndDate.getText().toString()).get(Calendar.MONTH),
+                    stringToCalendar(editEndDate.getText().toString()).get(Calendar.DAY_OF_MONTH),
+                    LocalTime.parse(editEndTime.getText().toString()).getHour(),
+                    LocalTime.parse(editEndTime.getText().toString()).getMinute(),
+                    LocalTime.parse(editEndTime.getText().toString()).getSecond()
+            );
+        }
+        catch(DateTimeParseException eSecond)
+        {
+            errorMessage = "Время окончания расписания написано в неправильной форме";
+            errorMeeted=true;
+        }
+        catch(NumberFormatException eFirst)
+        {
+            errorMessage= "Дата окончания расписания написано в неправильной форме!";
+            errorMeeted=true;
+        }
         allInOneTimeEnd.set(
                 stringToCalendar(editEndDate.getText().toString()).get(Calendar.YEAR),
                 stringToCalendar(editEndDate.getText().toString()).get(Calendar.MONTH),
