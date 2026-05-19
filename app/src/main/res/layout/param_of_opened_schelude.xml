@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/paramNameOfOpenedSchelTextView"
+        android:layout_width="372dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="19dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/datesOfParamInOpenedSchelTextView"
+        android:layout_width="173dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unitOfMeasOfParamInOpenedSchelTextView" />
+
+    <TextView
+        android:id="@+id/timesOfParamInOpenedSchelTextView"
+        android:layout_width="166dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unitOfMeasOfParamInOpenedSchelTextView" />
+
+    <TextView
+        android:id="@+id/unitOfMeasOfParamInOpenedSchelTextView"
+        android:layout_width="169dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/paramNameOfOpenedSchelTextView" />
+
+    <Button
+        android:id="@+id/typeResultsBtn"
+        android:layout_width="126dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:enabled="false"
+        android:text="Записать результат"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datesOfParamInOpenedSchelTextView" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="1dp"
+        android:background="@android:color/holo_blue_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/typeResultsBtn" />
+
+    <Button
+        android:id="@+id/checkResBtn"
+        android:layout_width="132dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="204dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Результаты"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/paramNameOfOpenedSchelTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
