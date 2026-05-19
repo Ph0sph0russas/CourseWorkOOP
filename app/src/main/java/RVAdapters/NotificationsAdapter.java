@@ -81,7 +81,7 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
                     for (int l = 0; l < schelude.getParameters().get(j).getPeriodicityTime(); l++) {
                         if ((allInOneTime.getTimeInMillis())
                                 > (Calendar.getInstance().getTimeInMillis())) {
-                            String formatedDate = dateFormat.format(dateToCalculate.get(i));
+                            String formatedDate = dateFormat.format(dateToCalculate.getTime());
                             String formatedTime = timeToCalculate.format(timeFormat);
                             notifications.add(schelude.getParameters().get(j).getName() + " \n" +
                                     formatedDate + " " + formatedTime);

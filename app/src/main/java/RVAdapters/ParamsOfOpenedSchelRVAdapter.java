@@ -25,6 +25,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import entity.Parameter;
 import entity.Plan;
@@ -34,7 +35,6 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
     private LayoutInflater inflater;
     private ArrayList<Parameter> parameters;
-
 
     public ParamsOfOpenedSchelRVAdapter(Context context, ArrayList<Parameter> parameters) {
         this.parameters=parameters;
@@ -49,15 +49,15 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
         return new ParamsInOpenedSchelViewHolder(view);
     }
 
-    private boolean checkTypeBtnAvailability(Parameter parameter)
+    public boolean checkTypeBtnAvailability(Parameter parameter)
     {
         boolean availabilityCheck = false;
 
         LocalTime timeToCalculate = LocalTime.of(parameter.getBeginHours().getHour(), parameter.getBeginHours().getMinute());
         Calendar dateToCalculate = (Calendar) parameter.getBeginDate().clone();
 
-        Calendar allInOneTime = (Calendar) dateToCalculate.clone();
-        allInOneTime.set(
+        Calendar allInOneTimeParam = (Calendar) dateToCalculate.clone();
+        allInOneTimeParam.set(
                 dateToCalculate.get(Calendar.YEAR),
                 dateToCalculate.get(Calendar.MONTH),
                 dateToCalculate.get(Calendar.DAY_OF_MONTH),
@@ -66,6 +66,9 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
                 timeToCalculate.getSecond()
         );
 
+        Calendar allInOneTimeResult = new GregorianCalendar();
+
+
 
         int toPlusMinutes= parameter.getPeriodToActivateInMinutes();
         int toPlusDays=parameter.getPeriodToActivateInDays();
@@ -73,21 +76,42 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
         int diffInDays= parameter.getDiffInDays();
 
         Calendar todaysDateFiveMinLong = Calendar.getInstance();
-        todaysDateFiveMinLong.add(Calendar.MINUTE, 5);
+        todaysDateFiveMinLong.add(Calendar.MINUTE, 30);
 
         Calendar todaysDateFiveMinLess = Calendar.getInstance();
-        todaysDateFiveMinLess.add(Calendar.MINUTE, -5);
+        todaysDateFiveMinLess.add(Calendar.MINUTE, -30);
 
-        for (int k = 0; k<diffInDays;k++)
+        for (int i = 0; i<diffInDays;i++)
         {
 
-            for (int l = 0; l < parameter.getPeriodicityTime(); l++) {
-                if (allInOneTime.getTimeInMillis() < (todaysDateFiveMinLong.getTimeInMillis())
-                && allInOneTime.getTimeInMillis() > (todaysDateFiveMinLess.getTimeInMillis())) {
+            for (int j = 0; j < parameter.getPeriodicityTime(); j++) {
+                if (allInOneTimeParam.getTimeInMillis() < (todaysDateFiveMinLong.getTimeInMillis())
+                && allInOneTimeParam.getTimeInMillis() > (todaysDateFiveMinLess.getTimeInMillis())) {
                     availabilityCheck=true;
                 }
+
+                for (int k = 0; k<parameter.getResults().size(); k++)
+                {
+                    allInOneTimeResult.set(
+                            parameter.getResults().get(k).getDate().get(Calendar.YEAR),
+                            parameter.getResults().get(k).getDate().get(Calendar.MONTH),
+                            parameter.getResults().get(k).getDate().get(Calendar.DAY_OF_MONTH),
+                            parameter.getResults().get(k).getHours().getHour(),
+                            parameter.getResults().get(k).getHours().getMinute(),
+                            parameter.getResults().get(k).getHours().getSecond()
+                    );
+
+                    if (allInOneTimeResult.getTimeInMillis() < (todaysDateFiveMinLong.getTimeInMillis())
+                            && allInOneTimeResult.getTimeInMillis() > (todaysDateFiveMinLess.getTimeInMillis())) {
+                        availabilityCheck=false;
+                    }
+
+
+
+                }
+
                 timeToCalculate = timeToCalculate.plusMinutes(toPlusMinutes);
-                allInOneTime.set(
+                allInOneTimeParam.set(
                         dateToCalculate.get(Calendar.YEAR),
                         dateToCalculate.get(Calendar.MONTH),
                         dateToCalculate.get(Calendar.DAY_OF_MONTH),
@@ -99,7 +123,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
             dateToCalculate.roll(Calendar.DAY_OF_MONTH, toPlusDays);
             timeToCalculate = parameter.getBeginHours();
-            allInOneTime.set(
+            allInOneTimeParam.set(
                     dateToCalculate.get(Calendar.YEAR),
                     dateToCalculate.get(Calendar.MONTH),
                     dateToCalculate.get(Calendar.DAY_OF_MONTH),
@@ -156,9 +180,8 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
                 parameters.get(position).addResult(resultToAdd);
 
-                App app = (App) inflater.getContext().getApplicationContext();
-                app.getScheludes().get(app.getPlanOpenNumber()).getParameters().get(position).addResult(resultToAdd);
                 holder.typeResultsBtnView.setEnabled(false);
+
 
             });
 
@@ -193,8 +216,6 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
                 parameters.remove(position);
 
-
-
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, parameters.size());
 
@@ -205,6 +226,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
             });
             deleteDialog.show();
         });
+
 
     }
 

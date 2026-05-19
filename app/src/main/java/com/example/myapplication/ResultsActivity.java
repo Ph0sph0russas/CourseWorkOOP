@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;
@@ -95,23 +97,26 @@ public class ResultsActivity extends AppCompatActivity {
             lineChart.setVisibility(View.VISIBLE);
 
             ArrayList<Entry> entries = new ArrayList<>();
-            ArrayList<Result> resultsFromParam= openedParameter.getResults();
+            ArrayList<Result> resultsFromParam = openedParameter.getResults();
 
             Calendar allInOneTime = new GregorianCalendar();
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+            ArrayList<String> resultsAxisX = new ArrayList<>();
 
-            for (int i = 0; i<resultsFromParam.size(); i++)
-            {
+            for (int i = 0; i < resultsFromParam.size(); i++) {
                 allInOneTime.set(
                         resultsFromParam.get(i).getDate().get(Calendar.YEAR),
                         resultsFromParam.get(i).getDate().get(Calendar.MONTH),
                         resultsFromParam.get(i).getDate().get(Calendar.DAY_OF_MONTH),
                         resultsFromParam.get(i).getHours().getHour(),
                         resultsFromParam.get(i).getHours().getMinute(),
-                        resultsFromParam.get(i).getHours(). getSecond()
+                        resultsFromParam.get(i).getHours().getSecond()
                 );
-                entries.add(new Entry( (float) allInOneTime.getTimeInMillis(), resultsFromParam.get(i).getResult()));
+//                    entries.add(new Entry( (float) allInOneTime.getTimeInMillis(), resultsFromParam.get(i).getResult()));
+                entries.add(new Entry(i, resultsFromParam.get(i).getResult()));
+                resultsAxisX.add(dateFormat.format(allInOneTime.getTime()));
             }
 
 
@@ -121,22 +126,26 @@ public class ResultsActivity extends AppCompatActivity {
 
             LineData lineData = new LineData(lineDataSet);
 
-            lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    long timeInMillis = (long) value;
-                    Date date = new Date(timeInMillis);
-                    Calendar calendar = new GregorianCalendar();
-                    calendar.setTime(date);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    return dateFormat.format(calendar.getTime());
-                }
-            });
+
+            lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(resultsAxisX));
+
 
             lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
 
             lineChart.setData(lineData);
+            lineChart.setScaleEnabled(true);
+            lineChart.setDragEnabled(true);
+
+            lineChart.getXAxis().setGranularity(1f);
+            lineChart.getXAxis().setGranularityEnabled(true);
+
+            lineChart.getXAxis().setLabelRotationAngle(45);
+            lineChart.setExtraOffsets(10, 0, 10, 10);
+
+            lineChart.getXAxis().setLabelCount(entries.size(), false);
+
+
             lineChart.invalidate();
 
 

@@ -1,5 +1,6 @@
 package RVAdapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -51,6 +52,28 @@ public class ResultsAdapter extends  RecyclerView.Adapter<ResultsAdapter.Results
         holder.resultTimeViewText.setText(result.getHours().format(timeFormat));
 
 
+        holder.resultDeleteButtonView.setOnClickListener(view ->{
+
+            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(inflater.getContext());
+
+            deleteDialog.setTitle("Удалить результат " + result.getResult() + " ?");
+
+            deleteDialog.setPositiveButton("OK", (dialog, which) -> {
+
+                results.remove(position);
+
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, results.size());
+
+            });
+
+            deleteDialog.setNegativeButton("Отмена", (dialog, which) -> {
+                dialog.cancel();
+            });
+            deleteDialog.show();
+
+
+        });
 
     }
 
@@ -63,12 +86,16 @@ public class ResultsAdapter extends  RecyclerView.Adapter<ResultsAdapter.Results
 
         TextView resultViewText, resultDateViewText, resultTimeViewText;
 
+        Button resultDeleteButtonView;
+
         ResultsViewHolder(View view){
             super(view);
 
             resultViewText=view.findViewById(R.id.resultTextView);
             resultDateViewText=view.findViewById(R.id.resultDateTextView);
             resultTimeViewText=view.findViewById(R.id.resultTimeTextView);
+
+            resultDeleteButtonView=view.findViewById(R.id.resultDeleteButton);
 
         }
     }

@@ -22,6 +22,7 @@ import entity.Plan;
 
 public class OpenedScheludeActivity extends AppCompatActivity {
     Plan openedSchelude;
+    ParamsOfOpenedSchelRVAdapter adapterForRV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         TextView schelNameView, schelDatesView, schelTimesView;
@@ -56,10 +57,10 @@ public class OpenedScheludeActivity extends AppCompatActivity {
         RecyclerView openedSchelParamsRV= findViewById(R.id.paramsOfOpenedSchelRV);
         openedSchelParamsRV.setLayoutManager(new LinearLayoutManager(this));
 
-        ParamsOfOpenedSchelRVAdapter adapterForRV = new ParamsOfOpenedSchelRVAdapter(this, openedSchelude.getParameters());
+
+
+        adapterForRV = new ParamsOfOpenedSchelRVAdapter(this, openedSchelude.getParameters());
         openedSchelParamsRV.setAdapter(adapterForRV);
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -67,10 +68,19 @@ public class OpenedScheludeActivity extends AppCompatActivity {
             return insets;
         });
     }
-
+    // когда сидим в окне, кнопка могла загореться, когда необходимо записать результаты
     @Override
     protected void onResume() {
         super.onResume();
+
+        for (int i = 0; i<openedSchelude.getParameters().size(); i++)
+        {
+            if (adapterForRV.checkTypeBtnAvailability(openedSchelude.getParameters().get(i))==true)
+            {
+                adapterForRV.notifyItemChanged(i);
+            }
+        }
+
     }
 
     public void returnToSchelListBtnClick(View v)

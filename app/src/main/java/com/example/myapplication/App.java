@@ -67,28 +67,28 @@ public class App extends Application {
         plan2.addParameter(roomTemp);
 
 
-        Result r1 = new Result(365, new GregorianCalendar(2026, 4, 17), LocalTime.of(7, 30));
-        Result r2 = new Result(368, new GregorianCalendar(2026, 4, 17), LocalTime.of(12, 15));
-        Result r3 = new Result(370, new GregorianCalendar(2026, 4, 17), LocalTime.of(17, 45));
-
-// 18 мая 2026
-        Result r4 = new Result(366, new GregorianCalendar(2026, 4, 18), LocalTime.of(6, 45));
-        Result r5 = new Result(369, new GregorianCalendar(2026, 4, 18), LocalTime.of(14, 0));
-        Result r6 = new Result(371, new GregorianCalendar(2026, 4, 18), LocalTime.of(18, 0));
-
-// 19 мая 2026
-        Result r7 = new Result(364, new GregorianCalendar(2026, 4, 19), LocalTime.of(8, 20));
-        Result r8 = new Result(367, new GregorianCalendar(2026, 4, 19), LocalTime.of(13, 10));
-        Result r9 = new Result(372, new GregorianCalendar(2026, 4, 19), LocalTime.of(16, 50));
-        plan2.getParameters().get(0).addResult(r1);
-        plan2.getParameters().get(0).addResult(r2);
-        plan2.getParameters().get(0).addResult(r3);
-        plan2.getParameters().get(0).addResult(r4);
-        plan2.getParameters().get(0).addResult(r5);
-        plan2.getParameters().get(0).addResult(r6);
-        plan2.getParameters().get(0).addResult(r7);
-        plan2.getParameters().get(0).addResult(r8);
-        plan2.getParameters().get(0).addResult(r9);
+//        Result r1 = new Result(365, new GregorianCalendar(2026, 4, 17), LocalTime.of(7, 30));
+//        Result r2 = new Result(368, new GregorianCalendar(2026, 4, 17), LocalTime.of(12, 15));
+//        Result r3 = new Result(370, new GregorianCalendar(2026, 4, 17), LocalTime.of(17, 45));
+//
+//// 18 мая 2026
+//        Result r4 = new Result(366, new GregorianCalendar(2026, 4, 18), LocalTime.of(6, 45));
+//        Result r5 = new Result(369, new GregorianCalendar(2026, 4, 18), LocalTime.of(14, 0));
+//        Result r6 = new Result(371, new GregorianCalendar(2026, 4, 18), LocalTime.of(18, 0));
+//
+//// 19 мая 2026
+//        Result r7 = new Result(364, new GregorianCalendar(2026, 4, 19), LocalTime.of(8, 20));
+//        Result r8 = new Result(367, new GregorianCalendar(2026, 4, 19), LocalTime.of(13, 10));
+//        Result r9 = new Result(372, new GregorianCalendar(2026, 4, 19), LocalTime.of(16, 50));
+//        plan2.getParameters().get(0).addResult(r1);
+//        plan2.getParameters().get(0).addResult(r2);
+//        plan2.getParameters().get(0).addResult(r3);
+//        plan2.getParameters().get(0).addResult(r4);
+//        plan2.getParameters().get(0).addResult(r5);
+//        plan2.getParameters().get(0).addResult(r6);
+//        plan2.getParameters().get(0).addResult(r7);
+//        plan2.getParameters().get(0).addResult(r8);
+//        plan2.getParameters().get(0).addResult(r9);
 
         Plan plan3 = new Plan("Физическая активность",
                 new GregorianCalendar(2026, 4, 25),  // 25 мая 2026
