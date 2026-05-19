@@ -21,6 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import RVAdapters.ParametersRVAdapter;
 import entity.Parameter;
@@ -62,12 +65,63 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
     }
     public void createScheludeBtnClick(View v)
     {
+        boolean errorMeeted=false;
+        String errorMessage="";
+
 
         EditText editName = findViewById(R.id.editNameSchel);
         EditText editStartDate = findViewById(R.id.editTextStartDateSchel);
         EditText editEndDate=findViewById(R.id.editTextEndDateSchel);
         EditText editStartTime = findViewById(R.id.editTextTimeStartSchel);
         EditText editEndTime=findViewById(R.id.editTextTimeEndSchel);
+
+
+        Calendar allInOneTimeStart = new GregorianCalendar();
+        allInOneTimeStart.set(
+                stringToCalendar(editStartDate.getText().toString()).get(Calendar.YEAR),
+                stringToCalendar(editStartDate.getText().toString()).get(Calendar.MONTH),
+                stringToCalendar(editStartDate.getText().toString()).get(Calendar.DAY_OF_MONTH),
+                LocalTime.parse(editStartTime.getText().toString()).getHour(),
+                LocalTime.parse(editStartTime.getText().toString()).getMinute(),
+                LocalTime.parse(editStartTime.getText().toString()).getSecond()
+        );
+
+        Calendar allInOneTimeEnd = new GregorianCalendar();
+        allInOneTimeEnd.set(
+                stringToCalendar(editEndDate.getText().toString()).get(Calendar.YEAR),
+                stringToCalendar(editEndDate.getText().toString()).get(Calendar.MONTH),
+                stringToCalendar(editEndDate.getText().toString()).get(Calendar.DAY_OF_MONTH),
+                LocalTime.parse(editEndTime.getText().toString()).getHour(),
+                LocalTime.parse(editEndTime.getText().toString()).getMinute(),
+                LocalTime.parse(editEndTime.getText().toString()).getSecond()
+        );
+
+
+        if (allInOneTimeStart.getTimeInMillis() > allInOneTimeEnd.getTimeInMillis())
+        {
+            errorMessage="Полное время начала расписания не может быть позже полного времени окончания!";
+            errorMeeted=true;
+        }
+        else if (parametersList.isEmpty())
+        {
+            errorMessage="Добавьте параметры!";
+            errorMeeted=true;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (!errorMessage.isEmpty())
+        {
+            builder.setTitle("Ошибка")
+                    .setMessage(errorMessage)
+                    .setPositiveButton("ОК", (dialog, id) -> {
+                        builder.create().dismiss();
+                    });
+            builder.create().show();
+        }
+        if (errorMeeted)
+        {
+            return;
+        }
 
 
         Plan createdSchelude = new Plan(
@@ -78,12 +132,13 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
                 LocalTime.parse(editEndTime.getText().toString())
         );
 
+
         createdSchelude = adapterToRecycler.addAllParametersToPlan(createdSchelude, parametersToAddRecycler);
 
         App app = (App) getApplicationContext();
         app.getScheludes().add(createdSchelude);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setTitle("Создание расписания")
                 .setMessage("Расписание создано!")
                 .setPositiveButton("ОК", (dialog, id) -> {

@@ -18,11 +18,13 @@ import com.example.myapplication.R;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import entity.Parameter;
 import entity.Plan;
 
-public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapter.ViewHolder>{
+public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapter.createSchelViewHolder>{
 
     private LayoutInflater inflater;
     private ArrayList<Parameter> parameters;
@@ -32,14 +34,14 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
     }
     @NonNull
     @Override
-    public ParametersRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public createSchelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.list_item_param, parent, false);
-        return new ViewHolder(view);
+        return new createSchelViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ParametersRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(createSchelViewHolder holder, int position) {
 
         holder.paramNameView.setText("");
         holder.paramUnitView.setText("");
@@ -73,26 +75,125 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
 
 
 
-    public Plan addAllParametersToPlan(Plan plan, RecyclerView recyclerViewParams)
+    public Plan addAllParametersToPlan(Plan plan, RecyclerView recyclerViewParams) throws Exception
     {
         for (int i =0; i<parameters.size();i++)
         {
             Parameter parameterToAdd = new Parameter();
             RecyclerView.ViewHolder holder = recyclerViewParams.findViewHolderForAdapterPosition(i);
-            if (holder instanceof ViewHolder)
+            if (holder instanceof createSchelViewHolder)
             {
+                String paramName = ((createSchelViewHolder) holder).paramNameView.toString();
 
-                String perDays= ((ViewHolder) holder).paramPeriodicityDaysView.getText().toString();
-                String perTime = ((ViewHolder) holder).paramPeriodicityTimeView.getText().toString();
+                Calendar paramDateStart = stringToCalendar(((createSchelViewHolder) holder).paramDateStartView.getText().toString());
+
+                Calendar paramDateEnd = stringToCalendar(((createSchelViewHolder) holder).paramDateEndView.getText().toString());
+
+
+                LocalTime paramTimeStart = LocalTime.parse(((createSchelViewHolder) holder).paramTimeStartView.getText().toString());
+
+                LocalTime paramTimeEnd = LocalTime.parse(((createSchelViewHolder) holder).paramTimeEndView.getText().toString());
+
+                String perDays= ((createSchelViewHolder) holder).paramPeriodicityDaysView.getText().toString();
+
+                String perTime = ((createSchelViewHolder) holder).paramPeriodicityTimeView.getText().toString();
+
+                int perDaysInteger;
+                try
+                {
+                    perDaysInteger= Integer.parseInt(perDays);
+                }
+                catch(NumberFormatException e)
+                {
+                    throw new Exception("Повтор в днях должен быть написан только в виде числа!");
+                }
+
+                int perTimeInteger;
+                try
+                {
+                    perTimeInteger= Integer.parseInt(perTime);
+                }
+                catch(NumberFormatException e)
+                {
+                    throw new Exception("Повтор в часах должен быть написан только в виде числа");
+                }
+
+
+                Calendar allInOneTimeStartSchel = new GregorianCalendar();
+                allInOneTimeStartSchel.set(
+                        plan.getBeginDate().get(Calendar.YEAR),
+                        plan.getBeginDate().get(Calendar.MONTH),
+                        plan.getBeginDate().get(Calendar.DAY_OF_MONTH),
+                        plan.getBeginHours().getHour(),
+                        plan.getBeginHours().getMinute(),
+                        plan.getBeginHours().getSecond()
+                );
+
+                Calendar allInOneTimeEndSchel = new GregorianCalendar();
+                allInOneTimeEndSchel.set(
+                        plan.getEndDate().get(Calendar.YEAR),
+                        plan.getEndDate().get(Calendar.MONTH),
+                        plan.getEndDate().get(Calendar.DAY_OF_MONTH),
+                        plan.getEndHours().getHour(),
+                        plan.getEndHours().getMinute(),
+                        plan.getEndHours().getSecond()
+                );
+
+
+                Calendar allInOneTimeStartParam = new GregorianCalendar();
+                allInOneTimeStartParam.set(
+                        paramDateStart.get((Calendar.YEAR)),
+                        paramDateStart.get((Calendar.MONTH)),
+                        paramDateStart.get((Calendar.DAY_OF_MONTH)),
+                        paramTimeStart.getHour(),
+                        paramTimeStart.getMinute(),
+                        paramTimeStart.getSecond()
+                );
+
+                Calendar allInOneTimeEndParam = new GregorianCalendar();
+                allInOneTimeEndParam.set(
+                        paramDateEnd.get(Calendar.YEAR),
+                        paramDateEnd.get(Calendar.MONTH),
+                        paramDateEnd.get(Calendar.DAY_OF_MONTH),
+                        paramTimeEnd.getHour(),
+                        paramTimeEnd.getMinute(),
+                        paramTimeEnd.getSecond()
+                );
+
+
+
+
+
+
+                long diffInMillis = paramDateEnd.getTimeInMillis()
+                        - paramDateStart.getTimeInMillis();
+                int diffInDays= (int)(diffInMillis / (24 * 60 * 60 * 1000))+1;
+
+                if (allInOneTimeStartParam.getTimeInMillis()> allInOneTimeEndParam.getTimeInMillis())
+                {
+                    throw new Exception("Полное время начала параметра " + paramName
+                    + " не может больше полного времени конца параметра");
+                }
+                else if ((allInOneTimeStartSchel.getTimeInMillis() >allInOneTimeStartParam.getTimeInMillis()) ||
+                         (allInOneTimeEndSchel.getTimeInMillis() < allInOneTimeEndParam.getTimeInMillis()))
+                {
+                    throw new Exception("Время параметра " + paramName
+                    + " выходит за пределы расписания");
+                }
+                else if (perDaysInteger > diffInDays)
+                {
+                    throw new Exception("Количество повторов в день не может быть больше, чем интервал между начальной датой и конечной в параметре "
+                            + ((createSchelViewHolder) holder).paramNameView.toString() + ".");
+                }
                 parameterToAdd=new Parameter(
-                        ((ViewHolder) holder).paramNameView.getText().toString(),
-                        ((ViewHolder) holder).paramUnitView.getText().toString(),
-                        stringToCalendar(((ViewHolder) holder).paramDateStartView.getText().toString()),
-                        stringToCalendar(((ViewHolder) holder).paramDateEndView.getText().toString()),
-                        Integer.parseInt(perDays),
-                        Integer.parseInt(perTime),
-                        LocalTime.parse(((ViewHolder) holder).paramTimeStartView.getText().toString()),
-                        LocalTime.parse(((ViewHolder) holder).paramTimeEndView.getText().toString())
+                        paramName,
+                        ((createSchelViewHolder) holder).paramUnitView.getText().toString(),
+                        paramDateStart,
+                        paramDateEnd,
+                        perDaysInteger,
+                        perTimeInteger,
+                        paramTimeStart,
+                        paramTimeEnd
                 );
             }
             plan.addParameter(parameterToAdd);
@@ -101,12 +202,12 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
 
         return plan;
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class createSchelViewHolder extends RecyclerView.ViewHolder {
 
         EditText paramNameView, paramUnitView, paramDateStartView, paramDateEndView,
                 paramTimeStartView, paramTimeEndView, paramPeriodicityDaysView, paramPeriodicityTimeView;
         Button deleteParamButtonView;
-        ViewHolder(View view){
+        createSchelViewHolder(View view){
             super(view);
 
             paramNameView=view.findViewById(R.id.editTextNameParam);
