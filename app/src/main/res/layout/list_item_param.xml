@@ -76,7 +76,7 @@
         android:layout_marginTop="14dp"
         android:ems="10"
         android:hint="Время окончания"
-        android:inputType="time"
+        android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTimeStartParam" />
@@ -89,7 +89,7 @@
         android:layout_marginTop="14dp"
         android:ems="10"
         android:hint="Время начала"
-        android:inputType="time"
+        android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDateEndParam" />

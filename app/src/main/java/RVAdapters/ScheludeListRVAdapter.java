@@ -89,7 +89,7 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
         return scheludes.size();
     }
 
-    public static class ViewHolderScheludeListShow extends RecyclerView.ViewHolder {
+            public static class ViewHolderScheludeListShow extends RecyclerView.ViewHolder {
 
         TextView nameOfScheludeViewText;
         Button openScheludeButtonView, deleteScheludeButtonView;

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.App.dateStringCheck;
 import static com.example.myapplication.App.stringToCalendar;
 
 import android.content.Intent;
@@ -19,22 +20,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.DateTimeException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import RVAdapters.ParametersRVAdapter;
 import entity.Parameter;
 import entity.Plan;
 
 public class CreateNewScheludeActivity extends AppCompatActivity {
-    ArrayList<Parameter> parametersList=new ArrayList<>();
-    RecyclerView parametersToAddRecycler;
-    ParametersRVAdapter adapterToRecycler;
+    private ArrayList<Parameter> parametersList=new ArrayList<>();
+    private RecyclerView parametersToAddRecycler;
+    private ParametersRVAdapter adapterToRecycler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +66,7 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
     }
     public void createScheludeBtnClick(View v)
     {
-        boolean errorMeeted=false;
+
         String errorMessage="";
 
 
@@ -77,12 +76,31 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
         EditText editStartTime = findViewById(R.id.editTextTimeStartSchel);
         EditText editEndTime=findViewById(R.id.editTextTimeEndSchel);
 
+        if (editName.getText().toString().isEmpty())
+        {
+            errorMessage="Название расписания не может быть пустым.";
+            showDialog(errorMessage);
+            return;
+        }
 
 
 
+        if (dateStringCheck(editStartDate.getText().toString())==false)
+        {
+            errorMessage= "Дата начала расписания написано в неправильной форме!";
+            showDialog(errorMessage);
+            return;
+        }
 
-        Calendar allInOneTimeStart = Calendar.getInstance();
+        if (dateStringCheck(editEndDate.getText().toString())==false)
+        {
+            errorMessage= "Дата окончания расписания написано в неправильной форме!";
+            showDialog(errorMessage);
+            return;
+        }
 
+
+        Calendar allInOneTimeStart = new GregorianCalendar();
         try{
             allInOneTimeStart.set(
                     stringToCalendar(editStartDate.getText().toString()).get(Calendar.YEAR),
@@ -96,15 +114,11 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
         catch(DateTimeParseException eSecond)
         {
             errorMessage = "Время начала расписания написано в неправильной форме";
-            errorMeeted=true;
-        }
-        catch(NumberFormatException eFirst)
-        {
-            errorMessage= "Дата начала расписания написано в неправильной форме!";
-            errorMeeted=true;
+            showDialog(errorMessage);
+            return;
         }
 
-        Calendar allInOneTimeEnd = Calendar.getInstance();
+        Calendar allInOneTimeEnd=Calendar.getInstance();
 
         try{
             allInOneTimeEnd.set(
@@ -119,46 +133,22 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
         catch(DateTimeParseException eSecond)
         {
             errorMessage = "Время окончания расписания написано в неправильной форме";
-            errorMeeted=true;
+            showDialog(errorMessage);
+            return;
         }
-        catch(NumberFormatException eFirst)
-        {
-            errorMessage= "Дата окончания расписания написано в неправильной форме!";
-            errorMeeted=true;
-        }
-        allInOneTimeEnd.set(
-                stringToCalendar(editEndDate.getText().toString()).get(Calendar.YEAR),
-                stringToCalendar(editEndDate.getText().toString()).get(Calendar.MONTH),
-                stringToCalendar(editEndDate.getText().toString()).get(Calendar.DAY_OF_MONTH),
-                LocalTime.parse(editEndTime.getText().toString()).getHour(),
-                LocalTime.parse(editEndTime.getText().toString()).getMinute(),
-                LocalTime.parse(editEndTime.getText().toString()).getSecond()
-        );
+
 
 
         if (allInOneTimeStart.getTimeInMillis() > allInOneTimeEnd.getTimeInMillis())
         {
             errorMessage="Полное время начала расписания не может быть позже полного времени окончания!";
-            errorMeeted=true;
+            showDialog(errorMessage);
+            return;
         }
         else if (parametersList.isEmpty())
         {
             errorMessage="Добавьте параметры!";
-            errorMeeted=true;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (!errorMessage.isEmpty())
-        {
-            builder.setTitle("Ошибка")
-                    .setMessage(errorMessage)
-                    .setPositiveButton("ОК", (dialog, id) -> {
-                        builder.create().dismiss();
-                    });
-            builder.create().show();
-        }
-        if (errorMeeted)
-        {
+            showDialog(errorMessage);
             return;
         }
 
@@ -177,35 +167,16 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
         catch(Exception e)
         {
             errorMessage=e.getMessage();
-            errorMeeted=true;
-        }
-
-        if (!errorMessage.isEmpty())
-        {
-            builder.setTitle("Ошибка")
-                    .setMessage(errorMessage)
-                    .setPositiveButton("ОК", (dialog, id) -> {
-                        builder.create().dismiss();
-                    });
-            builder.create().show();
-        }
-        if (errorMeeted)
-        {
+            showDialog(errorMessage);
             return;
         }
 
 
+
         App app = (App) getApplicationContext();
         app.getScheludes().add(createdSchelude);
-
-
-        builder.setTitle("Создание расписания")
-                .setMessage("Расписание создано!")
-                .setPositiveButton("ОК", (dialog, id) -> {
-                    builder.create().dismiss();
-
-                });
-        builder.create().show();
+        showDialog("Расписание создано успешно!");
+        backFromCreateScheludeBtnClick(v);
     }
     public void makeScheludeInvisibleBtnClick(View v)
     {
@@ -295,5 +266,16 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
         }
 
     }
+    private void showDialog(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ошибка")
+                .setMessage(message)
+                .setPositiveButton("ОК", (dialog, id) -> {
+                    builder.create().dismiss();
+                });
+        builder.create().show();
+    }
+
 
 }

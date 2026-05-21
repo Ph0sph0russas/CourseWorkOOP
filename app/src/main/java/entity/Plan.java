@@ -11,7 +11,6 @@ public class Plan {
     private LocalTime endHours;
     private Calendar endDate;
     private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
-    public Plan() {}
     public Plan(String name, Calendar beginDate, Calendar endDate, LocalTime beginHours, LocalTime endHours)
     {
         this.name=name;
@@ -21,14 +20,7 @@ public class Plan {
         this.endHours = endHours;
     }
 
-    public void addParameter(Parameter parameter)
-    {
-        this.parameters.add(parameter);
-    }
-    public void deleteParameter(int position)
-    {
-        parameters.remove(position);
-    }
+
 
     public ArrayList<Parameter> getParameters() {
         return parameters;

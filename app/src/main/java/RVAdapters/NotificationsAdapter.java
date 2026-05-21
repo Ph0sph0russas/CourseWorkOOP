@@ -74,7 +74,8 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
                 int toPlusMinutes= schelude.getParameters().get(j).getPeriodToActivateInMinutes();
                 int toPlusDays=schelude.getParameters().get(j).getPeriodToActivateInDays();
 
-                int diffInDays= schelude.getParameters().get(j).getDiffInDays();
+                double diffInDays= Math.ceil((double) schelude.getParameters().get(j).getDiffInDays()/schelude.getParameters().get(j).getPeriodicityDate());
+
 
                 for (int k = 0; k<diffInDays;k++)
                 {
@@ -129,7 +130,6 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
 
     @Override
     public int getItemCount() {
-
         return notifications.size();
     }
 

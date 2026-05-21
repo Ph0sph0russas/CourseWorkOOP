@@ -22,8 +22,8 @@ import RVAdapters.ParamsOfOpenedSchelRVAdapter;
 import entity.Plan;
 
 public class OpenedScheludeActivity extends AppCompatActivity {
-    Plan openedSchelude;
-    ParamsOfOpenedSchelRVAdapter adapterForRV;
+    private Plan openedSchelude;
+    private ParamsOfOpenedSchelRVAdapter adapterForRV;
     private Runnable checkTimeRunnable;
     private Handler handler = new Handler(Looper.getMainLooper());
     @Override

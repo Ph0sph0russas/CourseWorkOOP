@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -19,7 +18,7 @@ import RVAdapters.NotificationsAdapter;
 import entity.Plan;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<Plan> scheludes = new ArrayList<>();
+    private ArrayList<Plan> scheludes = new ArrayList<>();
 
 
     @Override

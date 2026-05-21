@@ -36,8 +36,8 @@ import entity.Parameter;
 import entity.Result;
 
 public class ResultsActivity extends AppCompatActivity {
-    Parameter openedParameter;
-    RecyclerView resultsRV;
+    private Parameter openedParameter;
+    private RecyclerView resultsRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

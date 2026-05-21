@@ -28,7 +28,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import entity.Parameter;
-import entity.Plan;
 import entity.Result;
 
 public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfOpenedSchelRVAdapter.ParamsInOpenedSchelViewHolder>{
@@ -81,7 +80,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
         Calendar todaysDateFiveMinLess = Calendar.getInstance();
         todaysDateFiveMinLess.add(Calendar.MINUTE, -30);
 
-        for (int i = 0; i<diffInDays;i++)
+        for (int i = 0; i<(diffInDays/toPlusDays);i++)
         {
 
             for (int j = 0; j < parameter.getPeriodicityTime(); j++) {
@@ -173,14 +172,22 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
 
             enterResultDialog.setPositiveButton("OK", (dialog, which) -> {
+                int typedResult;
+                try
+                {
+                    typedResult = Integer.parseInt(fieldToType.getText().toString());
+                    Result resultToAdd = new Result(typedResult, Calendar.getInstance(), LocalTime.now());
 
-                int typedResult = Integer.parseInt(fieldToType.getText().toString());
+                    parameters.get(position).getResults().add(resultToAdd);
 
-                Result resultToAdd = new Result(typedResult, Calendar.getInstance(), LocalTime.now());
+                    holder.typeResultsBtnView.setEnabled(false);
+                }
+                catch(NumberFormatException e)
+                {
+                    dialog.cancel();
+                }
 
-                parameters.get(position).addResult(resultToAdd);
 
-                holder.typeResultsBtnView.setEnabled(false);
 
 
             });
@@ -238,7 +245,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
     public static class ParamsInOpenedSchelViewHolder extends RecyclerView.ViewHolder {
 
-        TextView paramNameOpenedSchelViewText, unitOfMeasParamOpenedSchelViewText, datesOfParamOpenedSchelViewText, timesOfParamOpenedSchelViewText;
+            TextView paramNameOpenedSchelViewText, unitOfMeasParamOpenedSchelViewText, datesOfParamOpenedSchelViewText, timesOfParamOpenedSchelViewText;
         Button checkResBtnView, typeResultsBtnView, deleteParamBtnView;
         ParamsInOpenedSchelViewHolder(View view){
             super(view);

@@ -18,7 +18,7 @@ import RVAdapters.ScheludeListRVAdapter;
 import entity.Plan;
 
 public class ScheludeListActivity extends AppCompatActivity {
-    ArrayList<Plan> scheludes = new ArrayList<>();
+    private ArrayList<Plan> scheludes = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,9 +41,6 @@ public class ScheludeListActivity extends AppCompatActivity {
             return insets;
         });
     }
-
-
-
 
     public void backFromOpenScheludesListBtnClick(View v)
     {
