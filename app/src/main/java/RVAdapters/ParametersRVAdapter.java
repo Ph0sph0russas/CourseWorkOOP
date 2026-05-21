@@ -149,7 +149,7 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
                 }
                 catch(NumberFormatException e)
                 {
-                    throw new Exception("Повтор в днях должен быть написан только в виде числа!");
+                    throw new Exception("Повтор в днях должен быть написан только в виде числа");
                 }
 
                 int perTimeInteger;
@@ -205,6 +205,18 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
                 );
 
 
+                int afterNight =0;
+                int endHoursInMinutes = (paramTimeEnd.getHour()*60)+ paramTimeEnd.getMinute();
+                int startHoursInMinutes = (paramTimeStart.getHour()*60) + paramTimeStart.getMinute();
+                if (endHoursInMinutes< startHoursInMinutes)
+                {
+                    afterNight=1440;
+                }
+                endHoursInMinutes = endHoursInMinutes+afterNight;
+                if (perTimeInteger > (endHoursInMinutes-startHoursInMinutes))
+                {
+                    throw new Exception("Повторов в день у одного из параметров не может быть больше чем количество минут между часами");
+                }
 
                 long diffInMillis = paramDateEnd.getTimeInMillis()
                         - paramDateStart.getTimeInMillis();
@@ -221,7 +233,15 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
                 }
                 else if (perDaysInteger > diffInDays)
                 {
-                    throw new Exception("Количество повторов в день не может быть больше, чем интервал между начальной датой и конечной в параметре");
+                    throw new Exception("Количество повторов в днях не может быть больше, чем интервал между начальной датой и конечной в параметре");
+                }
+                else if (perDaysInteger==0)
+                {
+                    throw new Exception("Повторы между днями должны иметь количество большее 0");
+                }
+                else if (perTimeInteger==0)
+                {
+                    throw new Exception("Повторы в день должны иметь количество большее 0");
                 }
                 parameterToAdd=new Parameter(
                         paramName,

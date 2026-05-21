@@ -72,15 +72,15 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
         int toPlusMinutes= parameter.getPeriodToActivateInMinutes();
         int toPlusDays=parameter.getPeriodToActivateInDays();
 
-        int diffInDays= parameter.getDiffInDays();
+
 
         Calendar todaysDateFiveMinLong = Calendar.getInstance();
-        todaysDateFiveMinLong.add(Calendar.MINUTE, 30);
+        todaysDateFiveMinLong.add(Calendar.MINUTE, 5);
 
         Calendar todaysDateFiveMinLess = Calendar.getInstance();
-        todaysDateFiveMinLess.add(Calendar.MINUTE, -30);
+        todaysDateFiveMinLess.add(Calendar.MINUTE, -5);
 
-        for (int i = 0; i<(diffInDays/toPlusDays);i++)
+        for (int i = 0; i<parameter.getPeriodicityDate();i++)
         {
 
             for (int j = 0; j < parameter.getPeriodicityTime(); j++) {

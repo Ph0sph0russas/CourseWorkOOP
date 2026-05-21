@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="program_name">Курс лечения</string>
+    <string name="open_schelude">Открыть список расписаний</string>
+    <string name="create_new_schelude">Создать новое расписание</string>
+    <string name="creating_name">Название</string>
+    <string name="creating_start_date">Дата начала</string>
+    <string name="creating_date_end">Дата окончания</string>
+    <string name="back_button">Назад</string>
+    <string name="creating_start_time">Время начала</string>
+    <string name="delete_button">Удалить</string>
+    <string name="creating_time_end">Время окончания</string>
+    <string name="creating_schelude">Расписание</string>
+    <string name="add_param_button">Создать параметр</string>
+    <string name="create_schelude_button">Создать расписание</string>
+    <string name="make_invincible_button">+/-</string>
+    <string name="graph_switch">График</string>
+    <string name="open_button">Открыть</string>
+    <string name="results_button">Результаты</string>
+    <string name="write_results_button">Записать результат</string>
 </resources>

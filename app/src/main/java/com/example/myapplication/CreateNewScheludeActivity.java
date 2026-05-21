@@ -56,8 +56,26 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
 
     public void backFromCreateScheludeBtnClick(View v)
     {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
+        if (parametersList.isEmpty())
+        {
+            AlertDialog.Builder scheludeAddedDialog = new AlertDialog.Builder(this);
+            scheludeAddedDialog.setTitle("Успех")
+                    .setMessage("Расписание создано")
+                    .setPositiveButton("OK", (dialog, id) ->{
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        scheludeAddedDialog.create().dismiss();
+                    });
+            scheludeAddedDialog.create().show();
+        }
+        else
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+        }
+
     }
 
     public void addParamBtnClick(View v)
@@ -87,14 +105,14 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
 
         if (dateStringCheck(editStartDate.getText().toString())==false)
         {
-            errorMessage= "Дата начала расписания написано в неправильной форме!";
+            errorMessage= "Дата начала расписания написано в неправильной форме или она не актуальна!";
             showDialog(errorMessage);
             return;
         }
 
         if (dateStringCheck(editEndDate.getText().toString())==false)
         {
-            errorMessage= "Дата окончания расписания написано в неправильной форме!";
+            errorMessage= "Дата окончания расписания написано в неправильной форме или она не актуальна!";
             showDialog(errorMessage);
             return;
         }
@@ -151,6 +169,12 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
             showDialog(errorMessage);
             return;
         }
+        else if (allInOneTimeStart.getTimeInMillis()==allInOneTimeEnd.getTimeInMillis())
+        {
+            errorMessage="Полные времена начала и конца расписания не могут быть одинаковы!";
+            showDialog(errorMessage);
+            return;
+        }
 
 
         Plan createdSchelude = new Plan(
@@ -175,7 +199,6 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
 
         App app = (App) getApplicationContext();
         app.getScheludes().add(createdSchelude);
-        showDialog("Расписание создано успешно!");
         backFromCreateScheludeBtnClick(v);
     }
     public void makeScheludeInvisibleBtnClick(View v)

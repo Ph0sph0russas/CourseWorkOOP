@@ -32,8 +32,8 @@ public class Parameter {
     {
 
         long diffInDays= getDiffInDays();
-        int periodToActivateInDays= (int)(diffInDays / periodicityDate);
-        return periodToActivateInDays;
+        double periodToActivateInDays= Math.ceil(((double)diffInDays / (double)periodicityDate));
+        return (int)periodToActivateInDays;
     }
 
     public int getDiffInDays() {
@@ -45,7 +45,12 @@ public class Parameter {
 
     public int getPeriodToActivateInMinutes()
     {
-        return ((endHours.getHour()*60+ endHours.getMinute())- (beginHours.getHour()*60 + beginHours.getMinute()))/this.periodicityTime;
+        int afterNight = 1440;
+        int endHoursInMinutes = endHours.getHour()*60+ endHours.getMinute();
+        int startHoursInMinutes = beginHours.getHour()*60 + beginHours.getMinute();
+        if (endHoursInMinutes > startHoursInMinutes)
+            afterNight=0;
+        return ((endHoursInMinutes + afterNight)- startHoursInMinutes)/this.periodicityTime;
     }
 
     public ArrayList<Result> getResults() {

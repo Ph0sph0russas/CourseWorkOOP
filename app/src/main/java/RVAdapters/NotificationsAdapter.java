@@ -74,15 +74,14 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
                 int toPlusMinutes= schelude.getParameters().get(j).getPeriodToActivateInMinutes();
                 int toPlusDays=schelude.getParameters().get(j).getPeriodToActivateInDays();
 
-                double diffInDays= Math.ceil((double) schelude.getParameters().get(j).getDiffInDays()/schelude.getParameters().get(j).getPeriodicityDate());
 
 
-                for (int k = 0; k<diffInDays;k++)
+                for (int k = 0; k<schelude.getParameters().get(j).getPeriodicityDate();k++)
                 {
                     for (int l = 0; l < schelude.getParameters().get(j).getPeriodicityTime(); l++) {
                         if ((allInOneTime.getTimeInMillis())
-                                > (Calendar.getInstance().getTimeInMillis())) {
-                            String formatedDate = dateFormat.format(dateToCalculate.getTime());
+                                >= (Calendar.getInstance().getTimeInMillis())) {
+                            String formatedDate = dateFormat.format(allInOneTime.getTime());
                             String formatedTime = timeToCalculate.format(timeFormat);
                             notifications.add(schelude.getParameters().get(j).getName() + " \n" +
                                     formatedDate + " " + formatedTime);

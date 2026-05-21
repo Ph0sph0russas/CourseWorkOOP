@@ -55,7 +55,7 @@
         android:layout_marginTop="36dp"
         android:backgroundTint="@android:color/holo_blue_dark"
         android:enabled="false"
-        android:text="Записать результат"
+        android:text="@string/write_results_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datesOfParamInOpenedSchelTextView" />
 
@@ -78,7 +78,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="204dp"
         android:backgroundTint="@android:color/holo_blue_dark"
-        android:text="Результаты"
+        android:text="@string/results_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/paramNameOfOpenedSchelTextView" />
 
@@ -89,7 +89,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="36dp"
         android:backgroundTint="@android:color/holo_blue_dark"
-        android:text="Удалить"
+        android:text="@string/delete_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/paramNameOfOpenedSchelTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

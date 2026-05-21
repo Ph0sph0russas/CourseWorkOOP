@@ -61,7 +61,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="177dp"
         android:layout_marginBottom="19dp"
-        android:text="Курс лечения"
+        android:text="@string/program_name"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +95,7 @@
         android:layout_marginBottom="8dp"
         android:backgroundTint="@android:color/holo_blue_dark"
         android:onClick="backToOpenedSchelButtonClick"
-        android:text="Назад"
+        android:text="@string/back_button"
         app:layout_constraintBottom_toTopOf="@+id/divider10"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -107,7 +107,7 @@
         android:layout_marginEnd="16dp"
         android:checked="false"
         android:onClick="graphSwitchClick"
-        android:text="График"
+        android:text="@string/graph_switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:checked="false" />
