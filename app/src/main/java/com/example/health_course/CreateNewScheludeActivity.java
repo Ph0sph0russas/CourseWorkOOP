@@ -185,19 +185,29 @@ public class CreateNewScheludeActivity extends AppCompatActivity {
                 LocalTime.parse(editEndTime.getText().toString())
         );
 
-        try{
-            createdSchelude = adapterToRecycler.addAllParametersToPlan(createdSchelude, parametersToAddRecycler);
-        }
-        catch(Exception e)
-        {
-            errorMessage=e.getMessage();
-            showDialog(errorMessage);
-            return;
-        }
 
 
 
         App app = (App) getApplicationContext();
+
+        long newPlanId= app.getDataBase().writeScheludeDB(
+                editName.getText().toString(),
+                editStartDate.getText().toString(),
+                editEndDate.getText().toString(),
+                editStartTime.getText().toString(),
+                editEndTime.getText().toString()
+        );
+        try{
+            createdSchelude = adapterToRecycler.addAllParametersToPlan(createdSchelude, parametersToAddRecycler, newPlanId);
+        }
+        catch(Exception e)
+        {
+            app.getDataBase().deleteRowPlanDB(newPlanId);
+            errorMessage=e.getMessage();
+            showDialog(errorMessage);
+            return;
+        }
+        createdSchelude.setId(newPlanId);
         app.getScheludes().add(createdSchelude);
         backFromCreateScheludeBtnClick(v);
     }

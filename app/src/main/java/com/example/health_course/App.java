@@ -12,6 +12,11 @@ import entity.Plan;
 import entity.Result;
 
 public class App extends Application {
+    private DB dataBase;
+
+    public DB getDataBase() {
+        return this.dataBase;
+    }
 
     private ArrayList<Plan> scheludes = new ArrayList<>();
     private int planOpenNumber;
@@ -43,24 +48,27 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        dataBase = new DB(this);
+        dataBase.readDB();
+        this.scheludes=dataBase.getScheludes();
         initializeData();
 //        DB.connectionDBHealthCourse();
-        Plan plan = new Plan("Давление",
-        new GregorianCalendar(2026,5,22),
-        new GregorianCalendar(2026,5,29),
-        LocalTime.of(12,0),
-        LocalTime.of(19,0)
-        );
-        Parameter highPressure = new Parameter(
-                "Высокое давление",
-                "мм. рт. ст.",
-                new GregorianCalendar(2026,5,22),
-                new GregorianCalendar(2026,5,29),
-                2,
-                2,
-                LocalTime.of(12,0),
-                LocalTime.of(19,0)
-        );
+//        Plan plan = new Plan("Давление",
+//        new GregorianCalendar(2026,5,22),
+//        new GregorianCalendar(2026,5,29),
+//        LocalTime.of(12,0),
+//        LocalTime.of(19,0)
+//        );
+//        Parameter highPressure = new Parameter(
+//                "Высокое давление",
+//                "мм. рт. ст.",
+//                new GregorianCalendar(2026,5,22),
+//                new GregorianCalendar(2026,5,29),
+//                2,
+//                2,
+//                LocalTime.of(12,0),
+//                LocalTime.of(19,0)
+//        );
 //        Result r1 = new Result(
 //                120,
 //                new GregorianCalendar(2026,5,22),
@@ -85,12 +93,12 @@ public class App extends Application {
 //                LocalTime.of(15,30)
 //        );
 
-        plan.getParameters().add(highPressure);
+//        plan.getParameters().add(highPressure);
 //        plan.getParameters().get(0).getResults().add(r1);
 //        plan.getParameters().get(0).getResults().add(r2);
 //        plan.getParameters().get(0).getResults().add(r3);
 //        plan.getParameters().get(0).getResults().add(r4);
-        scheludes.add(plan);
+//        scheludes.add(plan);
     }
     public void initializeData()
     {
@@ -226,7 +234,11 @@ public class App extends Application {
                 return false;
             }
 
-            Calendar now = Calendar.getInstance();
+            Calendar now = new GregorianCalendar(
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            );
 
             Calendar dateToCheck = new GregorianCalendar(Integer.parseInt(year), monthInInt, Integer.parseInt(day));
 
@@ -244,9 +256,5 @@ public class App extends Application {
 
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        DB.closeDB();
-    }
+
 }

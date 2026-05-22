@@ -124,7 +124,7 @@ public class ResultsActivity extends AppCompatActivity {
                             resultsFromParam.get(i).getHours().getSecond()
                     );
                 }
-                else if (resultsFromParam.get(i).getResult() > maxRes)
+                if (resultsFromParam.get(i).getResult() > maxRes)
                 {
                     maxRes  = resultsFromParam.get(i).getResult();
                     dateForMaxRes.set(
@@ -139,6 +139,9 @@ public class ResultsActivity extends AppCompatActivity {
                 averageRes = averageRes+ resultsFromParam.get(i).getResult();
             }
             averageRes =averageRes/resultsFromParam.size();
+
+
+
             if (!resultsFromParam.isEmpty())
             {
                 String statsOutput = "Максимальное значение: " + maxRes + ", дата: " + dateFormat.format(dateForMaxRes.getTime()) + "\n"

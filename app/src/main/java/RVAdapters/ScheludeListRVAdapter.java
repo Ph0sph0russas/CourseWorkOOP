@@ -38,7 +38,7 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
     @Override
     public void onBindViewHolder(@NonNull ViewHolderScheludeListShow holder, int position) {
 
-
+        App app = (App) inflater.getContext().getApplicationContext();
 
         Plan schelude = scheludes.get(position);
         holder.nameOfScheludeViewText.setText(schelude.getName());
@@ -46,7 +46,7 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
 
         holder.openScheludeButtonView.setOnClickListener(v -> {
 
-            App app = (App) inflater.getContext().getApplicationContext();
+
             app.setPlanOpenNumber(position);
 
             Intent intent = new Intent(inflater.getContext(), OpenedScheludeActivity.class);
@@ -62,7 +62,9 @@ public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVA
 
             deleteDialog.setPositiveButton("OK", (dialog, which) -> {
 
+                app.getDataBase().deleteRowPlanDB(scheludes.get(position).getId());
                 scheludes.remove(position);
+
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, scheludes.size());
 

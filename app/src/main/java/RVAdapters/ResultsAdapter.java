@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.health_course.App;
 import com.example.health_course.R;
 
 import java.text.SimpleDateFormat;
@@ -40,7 +41,7 @@ public class ResultsAdapter extends  RecyclerView.Adapter<ResultsAdapter.Results
     public void onBindViewHolder(@NonNull ResultsViewHolder holder, int position) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-
+        App app = (App) inflater.getContext().getApplicationContext();
 
         Result result = results.get(position);
 
@@ -57,6 +58,7 @@ public class ResultsAdapter extends  RecyclerView.Adapter<ResultsAdapter.Results
 
             deleteDialog.setPositiveButton("OK", (dialog, which) -> {
 
+                app.getDataBase().deleteRowResultDB(results.get(position).getId());
                 results.remove(position);
 
                 notifyItemRemoved(position);

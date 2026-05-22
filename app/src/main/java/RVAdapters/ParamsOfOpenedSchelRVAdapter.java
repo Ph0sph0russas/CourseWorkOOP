@@ -138,7 +138,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
     @Override
     public void onBindViewHolder(ParamsOfOpenedSchelRVAdapter.ParamsInOpenedSchelViewHolder holder, int position) {
 
-
+        App app = (App) inflater.getContext().getApplicationContext();
         Parameter parameter = parameters.get(position);
 
 
@@ -176,9 +176,10 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
                 {
                     typedResult = Integer.parseInt(fieldToType.getText().toString());
                     Result resultToAdd = new Result(typedResult, Calendar.getInstance(), LocalTime.now());
+                    long newResultId = app.getDataBase().writeResultDB(typedResult, dateFormat.format(Calendar.getInstance().getTime()), LocalTime.now().format(timeFormat), parameter.getId());
+                    resultToAdd.setId(newResultId);
 
                     parameters.get(position).getResults().add(resultToAdd);
-
                     holder.typeResultsBtnView.setEnabled(false);
                 }
                 catch(NumberFormatException e)
@@ -201,7 +202,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
         holder.checkResBtnView.setOnClickListener(view ->{
 
-            App app = (App) inflater.getContext().getApplicationContext();
+
             app.setParameterOpenNumber(position);
 
 
@@ -220,6 +221,7 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
             deleteDialog.setPositiveButton("OK", (dialog, which) -> {
 
+                app.getDataBase().deleteRowParameterDB(parameters.get(position).getId());
                 parameters.remove(position);
 
                 notifyItemRemoved(position);

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.health_course.App;
 import com.example.health_course.R;
 
 import java.time.LocalTime;
@@ -77,8 +78,10 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
 
 
 
-    public Plan addAllParametersToPlan(Plan plan, RecyclerView recyclerViewParams) throws Exception
+    public Plan addAllParametersToPlan(Plan plan, RecyclerView recyclerViewParams, long newForeignPlanId) throws Exception
     {
+        App app = (App) inflater.getContext().getApplicationContext();
+        long newParamId;
         for (int i =0; i<parameters.size();i++)
         {
             Parameter parameterToAdd = new Parameter();
@@ -245,7 +248,7 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
                 }
                 parameterToAdd=new Parameter(
                         paramName,
-                        ((СreateSchelViewHolder) holder).paramUnitView.getText().toString(),
+                        unit,
                         paramDateStart,
                         paramDateEnd,
                         perDaysInteger,
@@ -253,6 +256,18 @@ public class ParametersRVAdapter extends RecyclerView.Adapter<ParametersRVAdapte
                         paramTimeStart,
                         paramTimeEnd
                 );
+                newParamId=app.getDataBase().writeParameterDB(
+                        paramName,
+                        unit,
+                        ((СreateSchelViewHolder) holder).paramDateStartView.getText().toString(),
+                        ((СreateSchelViewHolder) holder).paramDateEndView.getText().toString(),
+                        ((СreateSchelViewHolder) holder).paramTimeStartView.getText().toString(),
+                        ((СreateSchelViewHolder) holder).paramTimeEndView.getText().toString(),
+                        ((СreateSchelViewHolder) holder).paramPeriodicityTimeView.getText().toString(),
+                        ((СreateSchelViewHolder) holder).paramPeriodicityDaysView.getText().toString(),
+                        newForeignPlanId
+                );
+                parameterToAdd.setId(newParamId);
             }
             plan.getParameters().add(parameterToAdd);
         }
