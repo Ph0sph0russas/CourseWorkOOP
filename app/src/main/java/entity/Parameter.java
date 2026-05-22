@@ -3,7 +3,7 @@ package entity;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+
 
 public class Parameter {
     private String name="name";
@@ -15,6 +15,7 @@ public class Parameter {
     private int periodicityDate=1;
     private int periodicityTime=1;
     private ArrayList<Result> results = new ArrayList<Result>();
+    private long id;
     public Parameter(){}
     public Parameter(String name, String unitOfMeasurement, Calendar beginDate, Calendar endDate, int periodicityDate, int periodicityTime, LocalTime beginHours, LocalTime endHours)
     {
@@ -87,6 +88,14 @@ public class Parameter {
 
     public int getPeriodicityTime() {
         return this.periodicityTime;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setName(String name) {

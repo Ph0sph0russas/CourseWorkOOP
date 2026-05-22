@@ -1,7 +1,7 @@
-package com.example.myapplication;
+package com.example.health_course;
 
-import static com.example.myapplication.App.dateStringCheck;
-import static com.example.myapplication.App.stringToCalendar;
+import static com.example.health_course.App.dateStringCheck;
+import static com.example.health_course.App.stringToCalendar;
 
 import android.content.Intent;
 import android.os.Bundle;

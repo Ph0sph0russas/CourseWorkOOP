@@ -16,9 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.myapplication.App;
-import com.example.myapplication.R;
-import com.example.myapplication.ResultsActivity;
+import com.example.health_course.App;
+import com.example.health_course.R;
+import com.example.health_course.ResultsActivity;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;

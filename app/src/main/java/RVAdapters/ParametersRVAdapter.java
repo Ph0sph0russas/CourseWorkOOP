@@ -1,7 +1,7 @@
 package RVAdapters;
 
-import static com.example.myapplication.App.dateStringCheck;
-import static com.example.myapplication.App.stringToCalendar;
+import static com.example.health_course.App.dateStringCheck;
+import static com.example.health_course.App.stringToCalendar;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.myapplication.R;
+import com.example.health_course.R;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;

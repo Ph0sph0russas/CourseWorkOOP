@@ -11,6 +11,7 @@ public class Plan {
     private LocalTime endHours;
     private Calendar endDate;
     private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
+    private long id;
     public Plan(String name, Calendar beginDate, Calendar endDate, LocalTime beginHours, LocalTime endHours)
     {
         this.name=name;
@@ -44,6 +45,14 @@ public class Plan {
 
     public LocalTime getEndHours() {
         return this.endHours;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setBeginHours(LocalTime beginHours) {

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.health_course;
 
 import android.app.Application;
 
@@ -44,52 +44,53 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initializeData();
-//        Plan plan = new Plan("Давление",
-//        new GregorianCalendar(2026,5,22),
-//        new GregorianCalendar(2026,5,29),
-//        LocalTime.of(12,0),
-//        LocalTime.of(19,0)
-//        );
-//        Parameter highPressure = new Parameter(
-//                "Высокое давление",
-//                "мм. рт. ст.",
-//                new GregorianCalendar(2026,5,22),
-//                new GregorianCalendar(2026,5,29),
-//                2,
-//                2,
-//                LocalTime.of(12,0),
-//                LocalTime.of(19,0)
-//        );
-//        Result r1 = new Result(
-//                120,
-//                new GregorianCalendar(2026,5,22),
-//                LocalTime.of(12,0)
-//        );
-//
-//        Result r2 = new Result(
-//                100,
-//                new GregorianCalendar(2026,5,22),
-//                LocalTime.of(15,30)
-//        );
-//
-//        Result r3 = new Result(
-//                130,
-//                new GregorianCalendar(2026,5,26),
-//                LocalTime.of(12,0)
-//        );
-//
-//        Result r4 = new Result(
-//                150,
-//                new GregorianCalendar(2026,5,26),
-//                LocalTime.of(15,30)
-//        );
-//
-//        plan.getParameters().add(highPressure);
-//        plan.getParameters().get(0).getResults().add(r1);
-//        plan.getParameters().get(0).getResults().add(r2);
-//        plan.getParameters().get(0).getResults().add(r3);
-//        plan.getParameters().get(0).getResults().add(r4);
-//        scheludes.add(plan);
+//        DB.connectionDBHealthCourse();
+        Plan plan = new Plan("Давление",
+        new GregorianCalendar(2026,5,22),
+        new GregorianCalendar(2026,5,29),
+        LocalTime.of(12,0),
+        LocalTime.of(19,0)
+        );
+        Parameter highPressure = new Parameter(
+                "Высокое давление",
+                "мм. рт. ст.",
+                new GregorianCalendar(2026,5,22),
+                new GregorianCalendar(2026,5,29),
+                2,
+                2,
+                LocalTime.of(12,0),
+                LocalTime.of(19,0)
+        );
+        Result r1 = new Result(
+                120,
+                new GregorianCalendar(2026,5,22),
+                LocalTime.of(12,0)
+        );
+
+        Result r2 = new Result(
+                100,
+                new GregorianCalendar(2026,5,22),
+                LocalTime.of(15,30)
+        );
+
+        Result r3 = new Result(
+                130,
+                new GregorianCalendar(2026,5,26),
+                LocalTime.of(12,0)
+        );
+
+        Result r4 = new Result(
+                150,
+                new GregorianCalendar(2026,5,26),
+                LocalTime.of(15,30)
+        );
+
+        plan.getParameters().add(highPressure);
+        plan.getParameters().get(0).getResults().add(r1);
+        plan.getParameters().get(0).getResults().add(r2);
+        plan.getParameters().get(0).getResults().add(r3);
+        plan.getParameters().get(0).getResults().add(r4);
+        scheludes.add(plan);
     }
     public void initializeData()
     {
@@ -241,5 +242,11 @@ public class App extends Application {
             return false;
         }
 
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        DB.closeDB();
     }
 }

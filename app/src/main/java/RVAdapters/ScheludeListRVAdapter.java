@@ -3,28 +3,22 @@ package RVAdapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.App;
-import com.example.myapplication.OpenedScheludeActivity;
-import com.example.myapplication.R;
+import com.example.health_course.App;
+import com.example.health_course.OpenedScheludeActivity;
+import com.example.health_course.R;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import entity.Plan;
-import entity.Result;
 
 public class ScheludeListRVAdapter extends  RecyclerView.Adapter<ScheludeListRVAdapter.ViewHolderScheludeListShow>{
 

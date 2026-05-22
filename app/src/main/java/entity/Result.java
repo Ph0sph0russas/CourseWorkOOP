@@ -7,6 +7,7 @@ public class Result {
     private int result;
     private Calendar date;
     private LocalTime hours;
+    private long id;
     public Result(int result, Calendar date, LocalTime hours)
     {
         this.result=result;
@@ -24,6 +25,14 @@ public class Result {
 
     public LocalTime getHours() {
         return this.hours;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setResult(int result) {
