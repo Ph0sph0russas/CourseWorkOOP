@@ -88,11 +88,12 @@ public class ResultsActivity extends AppCompatActivity {
 
         Switch graphSwitchView = findViewById(R.id.graphSwitch);
         LineChart lineChart = findViewById(R.id.resultsGraph);
+        TextView graphStatsViewText = findViewById(R.id.graphStatsTextView);
         if (graphSwitchView.isChecked())
         {
             resultsRV.setVisibility(View.GONE);
             lineChart.setVisibility(View.VISIBLE);
-
+            graphStatsViewText.setVisibility(View.VISIBLE);
             ArrayList<Entry> entries = new ArrayList<>();
             ArrayList<Result> resultsFromParam = openedParameter.getResults();
 
@@ -102,6 +103,50 @@ public class ResultsActivity extends AppCompatActivity {
 
             ArrayList<String> resultsAxisX = new ArrayList<>();
 
+
+            Calendar dateForMinRes = new GregorianCalendar();
+            Calendar dateForMaxRes = new GregorianCalendar();
+            int minRes = 9999999;
+            int maxRes = -9999999;
+            double averageRes= 0;
+            for (int i = 0; i < resultsFromParam.size(); i++)
+            {
+
+                if (resultsFromParam.get(i).getResult() < minRes)
+                {
+                    minRes = resultsFromParam.get(i).getResult();
+                    dateForMinRes.set(
+                            resultsFromParam.get(i).getDate().get(Calendar.YEAR),
+                            resultsFromParam.get(i).getDate().get(Calendar.MONTH),
+                            resultsFromParam.get(i).getDate().get(Calendar.DAY_OF_MONTH),
+                            resultsFromParam.get(i).getHours().getHour(),
+                            resultsFromParam.get(i).getHours().getMinute(),
+                            resultsFromParam.get(i).getHours().getSecond()
+                    );
+                }
+                else if (resultsFromParam.get(i).getResult() > maxRes)
+                {
+                    maxRes  = resultsFromParam.get(i).getResult();
+                    dateForMaxRes.set(
+                            resultsFromParam.get(i).getDate().get(Calendar.YEAR),
+                            resultsFromParam.get(i).getDate().get(Calendar.MONTH),
+                            resultsFromParam.get(i).getDate().get(Calendar.DAY_OF_MONTH),
+                            resultsFromParam.get(i).getHours().getHour(),
+                            resultsFromParam.get(i).getHours().getMinute(),
+                            resultsFromParam.get(i).getHours().getSecond()
+                    );
+                }
+                averageRes = averageRes+ resultsFromParam.get(i).getResult();
+            }
+            averageRes =averageRes/resultsFromParam.size();
+            if (!resultsFromParam.isEmpty())
+            {
+                String statsOutput = "Максимальное значение: " + maxRes + ", дата: " + dateFormat.format(dateForMaxRes.getTime()) + "\n"
+                        + "Минимальное значение: " + minRes + ", дата: " + dateFormat.format(dateForMinRes.getTime()) + "\n"
+                        + "Среднее значение: " + averageRes;
+                graphStatsViewText.setText(statsOutput);
+
+            }
             for (int i = 0; i < resultsFromParam.size(); i++) {
                 allInOneTime.set(
                         resultsFromParam.get(i).getDate().get(Calendar.YEAR),
@@ -111,10 +156,13 @@ public class ResultsActivity extends AppCompatActivity {
                         resultsFromParam.get(i).getHours().getMinute(),
                         resultsFromParam.get(i).getHours().getSecond()
                 );
-//                    entries.add(new Entry( (float) allInOneTime.getTimeInMillis(), resultsFromParam.get(i).getResult()));
+
                 entries.add(new Entry(i, resultsFromParam.get(i).getResult()));
                 resultsAxisX.add(dateFormat.format(allInOneTime.getTime()));
             }
+
+
+
 
 
             LineDataSet lineDataSet = new LineDataSet(entries, "Результаты: " + openedParameter.getName());
@@ -146,11 +194,14 @@ public class ResultsActivity extends AppCompatActivity {
             lineChart.invalidate();
 
 
+
+
         }
         else
         {
             resultsRV.setVisibility(View.VISIBLE);
             lineChart.setVisibility(View.GONE);
+            graphStatsViewText.setVisibility(View.GONE);
         }
     }
 }

@@ -2,6 +2,8 @@ package com.example.health_course;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Plan> scheludes = new ArrayList<>();
 
     private RecyclerView notificationsListRV;
+    private Runnable checkTimeRunnable;
+    private Handler handler = new Handler(Looper.getMainLooper());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
         notificationsListRV.setAdapter(notificationsAdapterForRV);
 
 
+        checkTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i<scheludes.size(); i++)
+                    for (int j = 0; i<scheludes.get(i).getParameters().size(); j++)
+                    {
+                        notificationsAdapterForRV.updateNotifications();
+                        handler.postDelayed(this,60000);
+                    }
+            }
+        };
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

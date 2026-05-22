@@ -26,6 +26,7 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
     private LayoutInflater inflater;
     private ArrayList<Plan> scheludes;
     private ArrayList<String> notifications=new ArrayList<String>();
+    private ArrayList<Boolean> lateNotif = new ArrayList<Boolean>();
     public NotificationsAdapter(Context context, ArrayList<Plan> scheludes){
         this.scheludes=scheludes;
         this.inflater = LayoutInflater.from(context);
@@ -37,6 +38,11 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
 
         View view = inflater.inflate(R.layout.notification_item, parent, false);
         return new NotificationsAdapter.ViewHolderNotifications(view);
+    }
+    public void updateNotifications()
+    {
+        makeNotifications();
+        notifyDataSetChanged();
     }
     private void makeNotifications()
     {

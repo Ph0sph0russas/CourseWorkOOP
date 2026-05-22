@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".ResultsActivity">
 
     <TextView
@@ -72,20 +72,21 @@
         android:id="@+id/resultsRecyclerView"
         android:layout_width="410dp"
         android:layout_height="529dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="136dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paramTimeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/divider10" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/resultsGraph"
         android:layout_width="411dp"
-        android:layout_height="527dp"
-        android:layout_marginTop="136dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="140dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider10" />
+        app:layout_constraintTop_toBottomOf="@+id/divider10"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/backToOpenedSchelButton"
@@ -111,5 +112,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:checked="false" />
+
+    <TextView
+        android:id="@+id/graphStatsTextView"
+        android:layout_width="387dp"
+        android:layout_height="116dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultsGraph"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
