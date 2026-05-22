@@ -101,12 +101,12 @@ public class App extends Application {
 //                LocalTime.of(23, 0));
 //
 //        Parameter bodyTemp = new Parameter("Температура тела", "°C",
-//                new GregorianCalendar(2026, 4, 21), new GregorianCalendar(2026, 4, 25),
+//                new GregorianCalendar(2026, 5, 23), new GregorianCalendar(2026, 4, 25),
 //                3, 3,
 //                LocalTime.of(10, 0), LocalTime.of(14, 0));
 //
 //        Parameter roomTemp = new Parameter("Комнатная температура", "°C",
-//                new GregorianCalendar(2026, 5, 1), new GregorianCalendar(2026, 5, 3),
+//                new GregorianCalendar(2026, 5, 25), new GregorianCalendar(2026, 5, 27),
 //                2, 4,
 //                LocalTime.of(10, 0), LocalTime.of(19, 0));
 //

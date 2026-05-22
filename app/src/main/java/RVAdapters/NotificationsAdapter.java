@@ -2,6 +2,7 @@ package RVAdapters;
 
 import android.content.Context;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import entity.Plan;
 
@@ -48,7 +50,7 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
     {
 
         notifications.clear();
-
+        lateNotif.clear();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -65,8 +67,8 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
                 LocalTime timeToCalculate = LocalTime.of(schelude.getParameters().get(j).getBeginHours().getHour(), schelude.getParameters().get(j).getBeginHours().getMinute());
                 Calendar dateToCalculate = (Calendar) schelude.getParameters().get(j).getBeginDate().clone();
 
-                Calendar allInOneTime = (Calendar) dateToCalculate.clone();
-                allInOneTime.set(
+                Calendar allInOneTimeParam = (Calendar) dateToCalculate.clone();
+                allInOneTimeParam.set(
                         dateToCalculate.get(Calendar.YEAR),
                         dateToCalculate.get(Calendar.MONTH),
                         dateToCalculate.get(Calendar.DAY_OF_MONTH),
@@ -80,21 +82,62 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
                 int toPlusMinutes= schelude.getParameters().get(j).getPeriodToActivateInMinutes();
                 int toPlusDays=schelude.getParameters().get(j).getPeriodToActivateInDays();
 
+                Calendar todaysDateFiveMinLong = Calendar.getInstance();
+                todaysDateFiveMinLong.add(Calendar.MINUTE, 5);
 
+                Calendar todaysDateFiveMinLess = Calendar.getInstance();
+                todaysDateFiveMinLess.add(Calendar.MINUTE, -5);
 
+                Calendar now = Calendar.getInstance();
                 for (int k = 0; k<schelude.getParameters().get(j).getPeriodicityDate();k++)
                 {
                     for (int l = 0; l < schelude.getParameters().get(j).getPeriodicityTime(); l++) {
-                        if ((allInOneTime.getTimeInMillis())
-                                >= (Calendar.getInstance().getTimeInMillis())) {
-                            String formatedDate = dateFormat.format(allInOneTime.getTime());
-                            String formatedTime = timeToCalculate.format(timeFormat);
-                            notifications.add(schelude.getParameters().get(j).getName() + " \n" +
-                                    formatedDate + " " + formatedTime);
+                        if (allInOneTimeParam.getTimeInMillis()>=todaysDateFiveMinLess.getTimeInMillis()) {
+
+                            boolean alreadyResulted = false;
+                            for (int m = 0; m<schelude.getParameters().get(j).getResults().size(); m++)
+                            {
+                                Calendar allInOneTimeResult = new GregorianCalendar();
+                                allInOneTimeResult.set(
+                                        schelude.getParameters().get(j).getResults().get(m).getDate().get(Calendar.YEAR),
+                                        schelude.getParameters().get(j).getResults().get(m).getDate().get(Calendar.MONTH),
+                                        schelude.getParameters().get(j).getResults().get(m).getDate().get(Calendar.DAY_OF_MONTH),
+                                        schelude.getParameters().get(j).getResults().get(m).getHours().getHour(),
+                                        schelude.getParameters().get(j).getResults().get(m).getHours().getMinute(),
+                                        schelude.getParameters().get(j).getResults().get(m).getHours().getSecond()
+                                );
+
+                                if (allInOneTimeResult.getTimeInMillis() <= (allInOneTimeParam.getTimeInMillis()+360000)
+                                        && allInOneTimeResult.getTimeInMillis() >= (allInOneTimeParam.getTimeInMillis()-360000)) {
+                                    alreadyResulted=true;
+                                }
+
+                            }
+
+
+                            if (allInOneTimeParam.getTimeInMillis()<= now.getTimeInMillis() &&
+                             allInOneTimeParam.getTimeInMillis()> todaysDateFiveMinLess.getTimeInMillis() && alreadyResulted==false)
+                            {
+                                lateNotif.add(true);
+                            }
+                            else
+                            {
+                                lateNotif.add(false);
+                            }
+
+                            if (alreadyResulted==false)
+                            {
+                                String formatedDate = dateFormat.format(allInOneTimeParam.getTime());
+                                String formatedTime = timeToCalculate.format(timeFormat);
+                                notifications.add(schelude.getParameters().get(j).getName() + " \n" +
+                                        formatedDate + " " + formatedTime);
+                            }
+
+
 
                         }
                         timeToCalculate = timeToCalculate.plusMinutes(toPlusMinutes);
-                        allInOneTime.set(
+                        allInOneTimeParam.set(
                                 dateToCalculate.get(Calendar.YEAR),
                                 dateToCalculate.get(Calendar.MONTH),
                                 dateToCalculate.get(Calendar.DAY_OF_MONTH),
@@ -106,7 +149,7 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
 
                     dateToCalculate.add(Calendar.DAY_OF_MONTH, toPlusDays);
                     timeToCalculate = schelude.getParameters().get(j).getBeginHours();
-                    allInOneTime.set(
+                    allInOneTimeParam.set(
                             dateToCalculate.get(Calendar.YEAR),
                             dateToCalculate.get(Calendar.MONTH),
                             dateToCalculate.get(Calendar.DAY_OF_MONTH),
@@ -128,9 +171,15 @@ public class NotificationsAdapter extends  RecyclerView.Adapter<NotificationsAda
 
 
         String notification = notifications.get(position);
-
+        if (lateNotif.get(position) == true)
+        {
+            holder.notificationViewText.setTextColor(Color.RED);
+        }
+        else
+        {
+            holder.notificationViewText.setTextColor(Color.BLACK);
+        }
         holder.notificationViewText.setText(notification);
-
     }
 
     @Override

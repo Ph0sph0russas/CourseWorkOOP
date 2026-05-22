@@ -4,19 +4,19 @@ package com.example.health_course;
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.*;
-
+import android.content.Context;
 
 import java.util.ArrayList;
 
 import entity.Plan;
 
-public class DB {
-
+public class DB extends SQLiteOpenHelper {
+    DB(Context context)
+    {
+        super(context, "health_course.db",null, 1);
+    }
     private static ArrayList<Plan> scheludes = new ArrayList<>();
     private static SQLiteDatabase db;
-    public static void connectionDBHealthCourse() throws SQLException {
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase("health_course.db", null, null);
-    }
     public static void newTables() throws SQLException{
         db.execSQL("CREATE TABLE if not exists 'Plan' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'begin_date' text, 'end_date' text, 'begin_time' text, 'end_time' text);");
         db.execSQL("CREATE TABLE if not exists 'Parameter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'unit_of_measurement' text, 'begin_date' text, 'end_date' text, 'periodicity_time' INTEGER, 'begin_time' text, 'end_time' text, 'periodicity_date' INTEGER, FOREIGN KEY ('plan_id') REFERENCES 'plan'('id'))");
@@ -152,4 +152,15 @@ public class DB {
     }
 
 
+    @Override
+    public void onCreate(SQLiteDatabase dataBase) {
+        dataBase.execSQL("CREATE TABLE if not exists 'Plan' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'begin_date' text, 'end_date' text, 'begin_time' text, 'end_time' text);");
+        dataBase.execSQL("CREATE TABLE if not exists 'Parameter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'unit_of_measurement' text, 'begin_date' text, 'end_date' text, 'periodicity_time' INTEGER, 'begin_time' text, 'end_time' text, 'periodicity_date' INTEGER, FOREIGN KEY ('plan_id') REFERENCES 'plan'('id'))");
+        dataBase.execSQL("CREATE TABLE if not exists 'Result'('id' INTEGER PRIMARY KEY AUTOINCREMENT,'result' INTEGER,'date' text, 'time' text, FOREIGN KEY('parameter_id') REFERENCES 'Parameter'('id')) ");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
 }

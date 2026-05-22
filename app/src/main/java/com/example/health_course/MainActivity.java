@@ -17,13 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import RVAdapters.NotificationsAdapter;
 import entity.Plan;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Plan> scheludes = new ArrayList<>();
-
     private RecyclerView notificationsListRV;
     private Runnable checkTimeRunnable;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -48,12 +48,10 @@ public class MainActivity extends AppCompatActivity {
         checkTimeRunnable = new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i<scheludes.size(); i++)
-                    for (int j = 0; i<scheludes.get(i).getParameters().size(); j++)
-                    {
-                        notificationsAdapterForRV.updateNotifications();
-                        handler.postDelayed(this,60000);
-                    }
+
+                notificationsAdapterForRV.updateNotifications();
+                handler.postDelayed(this, 60000);
+
             }
         };
 
@@ -63,6 +61,20 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(checkTimeRunnable, 0);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(checkTimeRunnable);
+    }
+
 
     public void createNewScheludeBtnClick(View v)
     {

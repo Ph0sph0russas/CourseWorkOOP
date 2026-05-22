@@ -79,13 +79,12 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
 
         Calendar todaysDateFiveMinLess = Calendar.getInstance();
         todaysDateFiveMinLess.add(Calendar.MINUTE, -5);
-
         for (int i = 0; i<parameter.getPeriodicityDate();i++)
         {
 
             for (int j = 0; j < parameter.getPeriodicityTime(); j++) {
-                if (allInOneTimeParam.getTimeInMillis() < (todaysDateFiveMinLong.getTimeInMillis())
-                && allInOneTimeParam.getTimeInMillis() > (todaysDateFiveMinLess.getTimeInMillis())) {
+                if (allInOneTimeParam.getTimeInMillis() <= (todaysDateFiveMinLong.getTimeInMillis())
+                && allInOneTimeParam.getTimeInMillis() >= (todaysDateFiveMinLess.getTimeInMillis())) {
                     availabilityCheck=true;
                 }
 
@@ -100,8 +99,8 @@ public class ParamsOfOpenedSchelRVAdapter extends RecyclerView.Adapter<ParamsOfO
                             parameter.getResults().get(k).getHours().getSecond()
                     );
 
-                    if (allInOneTimeResult.getTimeInMillis() < (todaysDateFiveMinLong.getTimeInMillis())
-                            && allInOneTimeResult.getTimeInMillis() > (todaysDateFiveMinLess.getTimeInMillis())) {
+                    if (allInOneTimeResult.getTimeInMillis() <= (todaysDateFiveMinLong.getTimeInMillis())
+                            && allInOneTimeResult.getTimeInMillis() >= (todaysDateFiveMinLess.getTimeInMillis())) {
                         availabilityCheck=false;
                     }
 
