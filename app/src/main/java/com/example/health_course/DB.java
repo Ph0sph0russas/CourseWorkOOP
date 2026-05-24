@@ -89,6 +89,7 @@ public class DB extends SQLiteOpenHelper {
             plan.setId(planId);
             scheludes.add(plan);
         }
+        selectQuerys.close();
         selectQuerys= db.rawQuery("SELECT * FROM 'Parameter'", null);
         while (selectQuerys.moveToNext())
         {
@@ -116,6 +117,7 @@ public class DB extends SQLiteOpenHelper {
             }
 
         }
+        selectQuerys.close();
         selectQuerys=db.rawQuery("SELECT * FROM 'Result'", null);
         while (selectQuerys.moveToNext())
         {
@@ -147,10 +149,6 @@ public class DB extends SQLiteOpenHelper {
         }
         db.close();
     }
-//    public static ArrayList<Place> getGovernment()
-//    {
-//        return government;
-//    }
     public void deleteRowPlanDB(long rowIndex)
     {
         db = this.getWritableDatabase();
@@ -178,12 +176,18 @@ public class DB extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase dataBase) {
-        db = this.getWritableDatabase();
-        dataBase.execSQL("CREATE TABLE if not exists 'Plan' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'begin_date' text, 'end_date' text, 'begin_time' text, 'end_time' text);");
-        dataBase.execSQL("CREATE TABLE if not exists 'Parameter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'unit_of_measurement' text, 'begin_date' text, 'end_date' text, 'periodicity_time' INTEGER, 'begin_time' text, 'end_time' text, 'periodicity_date' INTEGER, 'plan_id' INTEGER, FOREIGN KEY ('plan_id') REFERENCES 'plan'('id') ON DELETE CASCADE)");
-        dataBase.execSQL("CREATE TABLE if not exists 'Result'('id' INTEGER PRIMARY KEY AUTOINCREMENT,'result' INTEGER,'date' text, 'time' text,'parameter_id' INTEGER, FOREIGN KEY('parameter_id') REFERENCES 'Parameter'('id') ON DELETE CASCADE)");
-        db.close();
+    public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE if not exists 'Plan' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'begin_date' text, 'end_date' text, 'begin_time' text, 'end_time' text);");
+        db.execSQL("CREATE TABLE if not exists 'Parameter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'unit_of_measurement' text, 'begin_date' text, 'end_date' text, 'periodicity_time' INTEGER, 'begin_time' text, 'end_time' text, 'periodicity_date' INTEGER, 'plan_id' INTEGER, FOREIGN KEY ('plan_id') REFERENCES 'Plan'('id') ON DELETE CASCADE)");
+        db.execSQL("CREATE TABLE if not exists 'Result'('id' INTEGER PRIMARY KEY AUTOINCREMENT,'result' INTEGER,'date' text, 'time' text,'parameter_id' INTEGER, FOREIGN KEY('parameter_id') REFERENCES 'Parameter'('id') ON DELETE CASCADE)");
+
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.execSQL("PRAGMA foreign_keys = ON;");
     }
 
     @Override

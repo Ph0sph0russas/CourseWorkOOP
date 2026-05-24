@@ -33,7 +33,7 @@ public class Parameter {
     {
 
         long diffInDays= getDiffInDays();
-        double periodToActivateInDays= Math.ceil(((double)diffInDays / (double)periodicityDate));
+        double periodToActivateInDays= Math.floor(((double)diffInDays / (double)periodicityDate));
         return (int)periodToActivateInDays;
     }
 
@@ -51,7 +51,7 @@ public class Parameter {
         int startHoursInMinutes = beginHours.getHour()*60 + beginHours.getMinute();
         if (endHoursInMinutes > startHoursInMinutes)
             afterNight=0;
-        return ((endHoursInMinutes + afterNight)- startHoursInMinutes)/this.periodicityTime;
+        return (int) Math.floor((double)((endHoursInMinutes + afterNight)- startHoursInMinutes)/this.periodicityTime);
     }
 
     public ArrayList<Result> getResults() {

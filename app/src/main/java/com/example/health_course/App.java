@@ -44,6 +44,10 @@ public class App extends Application {
     public void setScheludes(ArrayList<Plan> scheludes) {
         this.scheludes = scheludes;
     }
+    public void updateArrays()
+    {
+
+    }
 
     @Override
     public void onCreate() {
